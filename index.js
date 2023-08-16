@@ -27,6 +27,27 @@ app.get("/ask", async (req, res) => {
     res.render("ask-form")
 })
 
+app.get("/question/:id", async (req, res) => {
+    const id = req.params.id
+
+    if (isNaN(id)) {
+        res.redirect("/")
+        return
+    }
+
+    const question = await prisma.question.findUnique({
+        where: {
+            id: +id
+        }
+    })
+
+    if (!question) {
+        res.redirect("/")
+    }
+
+    res.render("question", { question: question })
+})
+
 app.post("/ask", async (req, res) => {
     questions.push({
         title: req.body.title,
