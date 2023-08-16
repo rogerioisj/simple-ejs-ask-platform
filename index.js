@@ -16,13 +16,14 @@ const dbConnect = async () => {
     console.log("Connected to database")
 }
 
-const questions = []
+let questions = []
 
-app.get("/", (req, res) => {
-    res.render("index")
+app.get("/", async (req, res) => {
+    questions = await prisma.question.findMany();
+    res.render("index", { questions: questions })
 })
 
-app.get("/ask", (req, res) => {
+app.get("/ask", async (req, res) => {
     res.render("ask-form")
 })
 
@@ -39,9 +40,7 @@ app.post("/ask", async (req, res) => {
         }
     })
 
-    console.log(await prisma.question.findMany())
-
-    res.redirect("/ask/")
+    res.redirect("/")
 })
 
 app.listen(3000, async () => {
