@@ -43,6 +43,7 @@ app.get("/question/:id", async (req, res) => {
 
     if (!question) {
         res.redirect("/")
+        return
     }
 
     res.render("question", { question: question })
