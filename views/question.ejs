@@ -6,6 +6,22 @@
     <h1><%= question.title %></h1>
     <p><%= question.description %></p>
     <hr>
+
+    <div class="card-body">
+        <form method="POST" action='/answer/<%= question.id %>'>
+            <label for="answer">Answer:</label>
+            <textarea class="form-control" id="answer" name="answer" rows="3"></textarea>
+            <br>
+            <button class="btn btn-success">Answer</button>
+        </form>
+    </div>
+
+    <% for (const answer of question.answers) { %>
+    <hr>
+    <div class="card-body">
+        <p><%= answer.text %></p>
+    </div>
+    <% } %>
 </div>
 </body>
 
