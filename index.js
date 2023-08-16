@@ -38,6 +38,13 @@ app.get("/question/:id", async (req, res) => {
     const question = await prisma.question.findUnique({
         where: {
             id: +id
+        },
+        include: {
+            answers: {
+                orderBy: {
+                    id: "desc"
+                }
+            }
         }
     })
 
@@ -63,6 +70,40 @@ app.post("/ask", async (req, res) => {
     })
 
     res.redirect("/")
+})
+
+app.post("/answer/:id", async (req, res) => {
+    const id = req.params.id
+    const answer = req.body.answer
+
+    if (isNaN(id)) {
+        res.redirect("/")
+        return
+    }
+
+    const question = await prisma.question.findUnique({
+        where: {
+            id: +id
+        }
+    })
+
+    if (!question) {
+        res.redirect("/")
+        return
+    }
+
+    await prisma.answer.create({
+        data: {
+            text: answer,
+            question: {
+                connect: {
+                    id: +id
+                }
+            }
+        }
+    })
+
+    res.redirect("/question/" + id)
 })
 
 app.listen(3000, async () => {
