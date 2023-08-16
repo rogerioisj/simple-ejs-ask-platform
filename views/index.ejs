@@ -2,6 +2,7 @@
 <body>
 <%- include ('partials/navbar.ejs')%>
     <% for (const question of questions) { %>
+        <br>
         <div class="card">
             <div class="card-title">
                 <h3><%= question.title %></h3>
@@ -12,11 +13,10 @@
             </div>
 
             <div class="card-footer">
-                <button class="btn btn-success">
-                    Answer
-                </button>
+                <a href="/question/<%= question.id %>"><button class="btn btn-primary"> Answer </button></a>
             </div>
         </div>
+        <br>
     <% } %>
 </body>
 <%- include ('partials/footer.ejs')%>
